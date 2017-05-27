@@ -1,15 +1,12 @@
-﻿using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
+﻿using System.Linq;
 using Microsoft.SqlServer.Dac.Model;
-using Schema = Anchor.Model.Core.AnchorModel.Schema;
 
 namespace Anchor.Model.Console
 {
     internal class Program
     {
         private static Core.BusinessLogic.Model _model;
-        private static string path = "SampleModel.xml";
+        private static readonly string path = "SampleModel.xml";
         public static TSqlModel SqlModel;
 
         private static void Main(string[] args)

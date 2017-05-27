@@ -25,6 +25,7 @@ namespace Anchor.Model.Core.BusinessLogic
         public string TableName { get; set; }
         public bool IsHistorized => !string.IsNullOrEmpty(TimeRange);
         public bool HasIdentifiers { get; set; }
+
         internal string GetCreateTableStatement()
         {
             var result = string.Empty;
