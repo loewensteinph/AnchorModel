@@ -1,0 +1,10 @@
+26.05.2017 12:46:54	This log contains information about the import schema operation into project 'Anchor.Model.Db' on computer 'ARMOR' by user 'Philip'.
+26.05.2017 12:46:54	Deserializing model
+26.05.2017 12:46:54	Resolving model
+26.05.2017 12:46:54	Visiting imported model for types
+26.05.2017 12:46:55	Scanning project for duplicate elements
+26.05.2017 12:46:55	Finished duplicate element processing
+26.05.2017 12:46:56	Processing extra files
+26.05.2017 12:46:56	Finished importing Data-tier Application file.
+26.05.2017 12:46:56	A summary of the import was saved to the following location: F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\Import Schema Logs\Anchor.Model.Db_20170526104654.log
+26.05.2017 12:46:56	Click Finish to continue...

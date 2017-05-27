@@ -2,4 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Anchor.Model.Test
+/Anchor.Model.Console/obj/Debug
+/Anchor.Model.Console/bin/Debug
+/.vs
+/.vs

@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Anchor.Model.Db</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{a947a4ad-7ba4-4d7a-92fd-a29c862b4df3}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Anchor.Model.Db</RootNamespace>
+    <AssemblyName>Anchor.Model.Db</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="Assemblies\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\AC_Actor.sql" />
+    <Build Include="dbo\Tables\AC_exclusive_AC_with_ONG_currently.sql" />
+    <Build Include="dbo\Tables\AC_GEN_Actor_Gender.sql" />
+    <Build Include="dbo\Tables\AC_NAM_Actor_Name.sql" />
+    <Build Include="dbo\Tables\AC_parent_AC_child_PAT_having.sql" />
+    <Build Include="dbo\Tables\AC_part_PR_in_RAT_got.sql" />
+    <Build Include="dbo\Tables\AC_PLV_Actor_ProfessionalLevel.sql" />
+    <Build Include="dbo\Tables\EV_Event.sql" />
+    <Build Include="dbo\Tables\GEN_Gender.sql" />
+    <Build Include="dbo\Tables\ONG_Ongoing.sql" />
+    <Build Include="dbo\Tables\PAT_ParentalType.sql" />
+    <Build Include="dbo\Tables\PE_at_PR_wasPlayed.sql" />
+    <Build Include="dbo\Tables\PE_AUD_Performance_Audience.sql" />
+    <Build Include="dbo\Tables\PE_DAT_Performance_Date.sql" />
+    <Build Include="dbo\Tables\PE_in_AC_wasCast.sql" />
+    <Build Include="dbo\Tables\PE_Performance.sql" />
+    <Build Include="dbo\Tables\PE_REV_Performance_Revenue.sql" />
+    <Build Include="dbo\Tables\PE_subset_EV_of.sql" />
+    <Build Include="dbo\Tables\PE_wasHeld_ST_at.sql" />
+    <Build Include="dbo\Tables\PLV_ProfessionalLevel.sql" />
+    <Build Include="dbo\Tables\PR_content_ST_location_PE_of.sql" />
+    <Build Include="dbo\Tables\PR_NAM_Program_Name.sql" />
+    <Build Include="dbo\Tables\PR_Program.sql" />
+    <Build Include="dbo\Tables\RAT_Rating.sql" />
+    <Build Include="dbo\Tables\ST_at_PR_isPlaying.sql" />
+    <Build Include="dbo\Tables\ST_AVG_Stage_Average.sql" />
+    <Build Include="dbo\Tables\ST_LOC_Stage_Location.sql" />
+    <Build Include="dbo\Tables\ST_MIN_Stage_Minimum.sql" />
+    <Build Include="dbo\Tables\ST_NAM_Stage_Name.sql" />
+    <Build Include="dbo\Tables\ST_Stage.sql" />
+    <Build Include="dbo\Tables\UTL_Utilization.sql" />
+    <Build Include="dbo\Functions\MD5.sql" />
+    <Build Include="dbo\Views\lST_Stage.sql" />
+    <Build Include="dbo\Views\lPR_Program.sql" />
+    <Build Include="dbo\Views\lPE_Performance.sql" />
+    <Build Include="dbo\Views\lAC_Actor.sql" />
+    <Build Include="dbo\Stored Procedures\kST_Stage.sql" />
+    <Build Include="dbo\Stored Procedures\kPR_Program.sql" />
+    <Build Include="dbo\Stored Procedures\kPE_Performance.sql" />
+    <Build Include="dbo\Stored Procedures\kEV_Event.sql" />
+    <Build Include="dbo\Stored Procedures\kAC_Actor.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assemblies\Anchor.dll" />
+    <None Include="Anchor.Model.Db.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Anchor">
+      <HintPath>Assemblies\Anchor.dll</HintPath>
+      <SqlAssemblyName>Anchor</SqlAssemblyName>
+      <IsModelAware>True</IsModelAware>
+      <GenerateSqlClrDdl>False</GenerateSqlClrDdl>
+      <SqlOwnerName>dbo</SqlOwnerName>
+      <SqlPermissionSet>SAFE</SqlPermissionSet>
+    </Reference>
+  </ItemGroup>
+</Project>
