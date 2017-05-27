@@ -1,6 +1,0 @@
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\bin\Debug\Anchor.Model.Db.dacpac
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\bin\Debug\Anchor.Model.Db.dll
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\bin\Debug\Anchor.Model.Db.pdb
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\bin\Debug\Anchor.dll
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\obj\Debug\Anchor.Model.Db.dll
-F:\TFS\Workspaces\AnchorModel\Anchor.Model.Core\Anchor.Model.Db\obj\Debug\Anchor.Model.Db.pdb
