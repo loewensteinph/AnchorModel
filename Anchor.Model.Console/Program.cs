@@ -8,51 +8,43 @@ namespace Anchor.Model.Console
 {
     internal class Program
     {
+        private static Core.BusinessLogic.Model _model;
+        private static string path = "SampleModel.xml";
+        public static TSqlModel SqlModel;
+
         private static void Main(string[] args)
         {
-            Core.BusinessLogic.Model sch = null;
-            var path = "SampleModel.xml";
+            var options = new TSqlModelOptions();
+            SqlModel = new TSqlModel(SqlServerVersion.Sql130, options);
+            _model = new Core.BusinessLogic.Model(path);
 
-            var serializer = new XmlSerializer(typeof(Schema));
-
-            var reader = new StreamReader(path);
-            sch = (Core.BusinessLogic.Model) serializer.Deserialize(reader);
-            reader.Close();
-
-            sch.InitializeSchema();
-
-            foreach (var tie in sch.Tie)
-            {
-                //System.Console.Write(tie.CreateTableStatement);
-            }
-
-            foreach (var anch in sch.Anchor.Where(a => a.Mnemonic == "ST"))
+            foreach (var anch in _model.Anchor.Where(a => a.Mnemonic == "ST"))
             {
                 System.Console.WriteLine(anch.CreateInsertSpStatement);
 
                 foreach (var att in anch.Attribute)
                 {
-                    System.Console.WriteLine(att.Descriptor);
-                    System.Console.WriteLine(att.Knot);
-                    System.Console.WriteLine(att.CreateTableStatement);
+                    //System.Console.WriteLine(att.Descriptor);
+                    //System.Console.WriteLine(att.Knot);
+                    //System.Console.WriteLine(att.CreateTableStatement);
                 }
 
                 var res = anch.ToString();
             }
 
-            foreach (var knot in sch.Knot)
+            foreach (var knot in _model.Knot)
             {
                 var res = knot.ToString();
             }
-            var sqlObjects = sch.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.Table)
+            var sqlObjects = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.Table)
                 .FirstOrDefault(tab => tab.Name.Parts[1].Equals("PLV_ProfessionalLevel"));
 
-            var clr = sch.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction);
+            var clr = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction);
 
             string script;
             var sc = sqlObjects.TryGetScript(out script);
 
-            sch.GenerateDacPac();
+            _model.GenerateDacPac();
         }
     }
 }

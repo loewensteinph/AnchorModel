@@ -15,32 +15,20 @@ namespace Anchor.Model.Core.BusinessLogic
     public class Tie : AnchorModel.Tie
     {
         public TieType TieType;
-
         public List<AnchorRole> AnchorRole { get; set; }
-
         public KnotRole KnotRole { get; set; }
-
         public Metadata Metadata { get; set; }
         public Layout Layout { get; set; }
-
         public string TimeRange { get; set; }
-
         public string CreateTableStatement => GetCreateTableStatement();
-
         public List<ForeignKey> ForeignKeyList { get; set; }
-
         public string TableName { get; set; }
-
         public bool IsHistorized => !string.IsNullOrEmpty(TimeRange);
-
         public bool HasIdentifiers { get; set; }
-
         internal string GetCreateTableStatement()
         {
             var result = string.Empty;
-
             var sb = new StringBuilder();
-
             sb.AppendFormat(@"CREATE TABLE [{0}].[{1}] (", Metadata.Capsule, TableName);
             foreach (var fk in ForeignKeyList)
                 sb.AppendFormat(@"{0} {1} not null,", fk.ColumnName, fk.ColumnDataType);
@@ -84,12 +72,9 @@ namespace Anchor.Model.Core.BusinessLogic
             }
             if (IsHistorized)
                 sb.AppendFormat(@"{0}_ChangedAt desc", TableName);
-
             sb.Append(@")");
-
             sb.Append(@");
 GO");
-
             result = sb.ToString();
             return result;
         }
