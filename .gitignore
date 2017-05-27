@@ -9,6 +9,7 @@
 /Anchor.Model.Db/bin/Debug
 /Anchor.Model.Test/obj/Debug
 /Anchor.Model.Test/bin/Debug
+/packages
 /.vs
 /Anchor.Model.Db/Anchor.Model.Db.jfm
 /Anchor.Model.Db/Anchor.Model.Db.dbmdl
