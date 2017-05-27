@@ -1,8 +1,14 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
 /Anchor.Model.Console/obj/Debug
 /Anchor.Model.Console/bin/Debug
+/Anchor.Model.Core/obj/Debug
+/Anchor.Model.Core/bin/Debug
+/Anchor.Model.Db/obj/Debug
+/Anchor.Model.Db/bin/Debug
+/Anchor.Model.Test/obj/Debug
+/Anchor.Model.Test/bin/Debug
 /.vs
-/.vs
+/Anchor.Model.Db/Anchor.Model.Db.jfm
+/Anchor.Model.Db/Anchor.Model.Db.dbmdl
