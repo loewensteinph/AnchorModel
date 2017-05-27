@@ -1,7 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
-using Microsoft.SqlServer.Dac.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Anchor.Model.Test
 {
