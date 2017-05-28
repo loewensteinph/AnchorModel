@@ -17,14 +17,12 @@ namespace Anchor.Model.Console
 
             foreach (var anch in _model.Anchor)
             {
-                System.Console.WriteLine(anch.CreateInsertSpStatement);
+                System.Console.WriteLine(anch.CreatePitFunctionStatement);
 
                 foreach (var att in anch.Attribute)
-                {
                     //System.Console.WriteLine(att.Descriptor);
                     //System.Console.WriteLine(att.Knot);
                     System.Console.WriteLine(att.RestatementFinderFunctionStatement);
-                }
 
                 var res = anch.ToString();
             }

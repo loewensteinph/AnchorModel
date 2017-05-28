@@ -4,17 +4,17 @@ namespace Anchor.Model.Core.BusinessLogic
 {
     public class Knot
     {
-        string name => $"{Mnemonic}_{Descriptor}";
+        public Metadata GlobalMetadata;
+        private string name => $"{Mnemonic}_{Descriptor}";
         private string identityName => $"{Name}_{GlobalMetadata.IdentitySuffix}";
-        string equivalentName => $"{Name}_{GlobalMetadata.EquivalentSuffix}";
+        private string equivalentName => $"{Name}_{GlobalMetadata.EquivalentSuffix}";
         public string businessName => Descriptor;
-        string valueColumnName => Name;
+        private string valueColumnName => Name;
         public string identityColumnName => $"{Mnemonic}_{GlobalMetadata.IdentitySuffix}";
         public string checksumColumnName => $"{Mnemonic}_{GlobalMetadata.ChecksumSuffix}";
-        string equivalentColumnName => $"{Mnemonic}_{GlobalMetadata.EquivalentSuffix}";
+        private string equivalentColumnName => $"{Mnemonic}_{GlobalMetadata.EquivalentSuffix}";
         public string capsule => Capsule == string.Empty ? GlobalMetadata.Encapsulation : Capsule;
         public string metadataColumnName => $"{GlobalMetadata.MetadataPrefix}_{Mnemonic}";
-        public Metadata GlobalMetadata;
         public Metadata Metadata { get; set; }
         public Layout Layout { get; set; }
         public string Mnemonic { get; set; }

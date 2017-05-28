@@ -14,44 +14,53 @@ namespace Anchor.Model.Core.BusinessLogic
     {
         public Anchor Anchor;
         public AttributeType AttributeType;
-        public Knot Knot;
         public Metadata GlobalMetadata;
+        public Knot Knot;
         private string statementTypes => IsHistorized && !IsIdempotent ? "'N','R'" : "'N'";
-        bool IsIdempotent => Metadata.Idempotent == "true" ? true : false;
+        private bool IsIdempotent => Metadata.Idempotent == "true" ? true : false;
         private string identityGenerator => Metadata.Generator == "true" ? "IDENTITY(1,1)" : string.Empty;
-        string uniqueMnemonic => $"{Anchor.Mnemonic}_{Mnemonic}";
-        string name => $"{Anchor.Mnemonic}_{Anchor.Descriptor}_{Descriptor}";
-        string businessName => Descriptor;
+        private string uniqueMnemonic => $"{Anchor.Mnemonic}_{Mnemonic}";
+        private string name => $"{Anchor.Mnemonic}_{Anchor.Descriptor}_{Descriptor}";
+        private string businessName => Descriptor;
         private string positName => $"{Anchor.Mnemonic}_{GlobalMetadata.PositSuffix}";
-        string annexName => $"{name}_{GlobalMetadata.AnnexSuffix}";
+        private string annexName => $"{name}_{GlobalMetadata.AnnexSuffix}";
         public string checksumColumnName => $"{uniqueMnemonic}_{GlobalMetadata.ChecksumSuffix}";
         public string identityColumnName => $"{uniqueMnemonic}_{GlobalMetadata.IdentitySuffix}";
         public string metadataColumnName => $"{GlobalMetadata.MetadataPrefix}_{uniqueMnemonic}";
-        string equivalentColumnName => $"{uniqueMnemonic}_{GlobalMetadata.EquivalentSuffix}";
-        string versionColumnName => $"{uniqueMnemonic}_{GlobalMetadata.VersionSuffix}";
-        string positingColumnName => $"{uniqueMnemonic}_{GlobalMetadata.PositingSuffix}";
-        string positorColumnName => $"{uniqueMnemonic}_{GlobalMetadata.PositorSuffix}";
-        string reliabilityColumnName => $"{uniqueMnemonic}_{GlobalMetadata.ReliabilitySuffix}";
-        string reliableColumnName => $"{uniqueMnemonic}_{GlobalMetadata.ReliabilitySuffix}"; // TODO:Check Matadata!
-        string statementTypeColumnName => $"{uniqueMnemonic}_{GlobalMetadata.StatementTypeSuffix}";
+        private string equivalentColumnName => $"{uniqueMnemonic}_{GlobalMetadata.EquivalentSuffix}";
+        private string versionColumnName => $"{uniqueMnemonic}_{GlobalMetadata.VersionSuffix}";
+        private string positingColumnName => $"{uniqueMnemonic}_{GlobalMetadata.PositingSuffix}";
+        private string positorColumnName => $"{uniqueMnemonic}_{GlobalMetadata.PositorSuffix}";
+        private string reliabilityColumnName => $"{uniqueMnemonic}_{GlobalMetadata.ReliabilitySuffix}";
+
+        private string reliableColumnName =>
+            $"{uniqueMnemonic}_{GlobalMetadata.ReliabilitySuffix}"; // TODO:Check Matadata!
+
+        private string statementTypeColumnName => $"{uniqueMnemonic}_{GlobalMetadata.StatementTypeSuffix}";
+
         public string anchorReferenceName => GlobalMetadata.improved
             ? $"{uniqueMnemonic}_{Anchor.Mnemonic}_{GlobalMetadata.IdentitySuffix}"
             : Anchor.identityColumnName;
+
         private string knotReferenceName => GlobalMetadata.improved
             ? $"{uniqueMnemonic}_{KnotRange}_{GlobalMetadata.IdentitySuffix}"
             : $"{KnotRange}_{GlobalMetadata.IdentitySuffix}";
+
         public string knotValueColumnName => GlobalMetadata.improved ? $"{uniqueMnemonic}_{Knot.Name}" : Knot.Name;
-        string knotChecksumColumnName => $"{uniqueMnemonic}_{Knot.checksumColumnName}";
-        string knotMetadataColumnName => GlobalMetadata.improved
+        private string knotChecksumColumnName => $"{uniqueMnemonic}_{Knot.checksumColumnName}";
+
+        private string knotMetadataColumnName => GlobalMetadata.improved
             ? $"{uniqueMnemonic}_{Knot.metadataColumnName}"
             : Knot.metadataColumnName;
-        string knotBusinessName => $"{businessName}_{Knot.businessName}";
-        string valueColumnName => knotReferenceName == string.Empty ? name : knotReferenceName;
+
+        private string knotBusinessName => $"{businessName}_{Knot.businessName}";
+        private string valueColumnName => knotReferenceName == string.Empty ? name : knotReferenceName;
         public string changingColumnName => $"{uniqueMnemonic}_{GlobalMetadata.ChangingSuffix}";
         public string Identity => Anchor.Identity;
         public string CreateTableStatement => GetCreateTableStatement();
         public string InsertTriggerStatement => GetInsertTriggerStatement();
         public string RestatementFinderFunctionStatement => GetRestatementFinderFunctionStatement();
+        public string RewinderFunctionStatement => GetRewinderFunctionStatement();
         public string Capsule => Metadata.Capsule;
         public string ChecksumColumnName => $"{Anchor.Mnemonic}_{Mnemonic}_{GlobalMetadata.ChecksumSuffix}";
         public string KnotColumnName => $"{Anchor.Mnemonic}_{Mnemonic}_{Knot.Mnemonic}_ID";
@@ -63,7 +72,8 @@ namespace Anchor.Model.Core.BusinessLogic
         public bool IsKnotted => Knot != null;
         public bool IsHistorized => !string.IsNullOrEmpty(TimeRange);
         public bool IsEquivalent => Metadata.Equivalence == "true";
-        private string valueType => IsKnotted? Knot.Identity:HasCheckSum? "varbinary(16)":DataRange ;
+        private string valueType => IsKnotted ? Knot.Identity : HasCheckSum ? "varbinary(16)" : DataRange;
+
         internal string GetCreateTableStatement()
         {
             var result = string.Empty;
@@ -113,6 +123,7 @@ GO");
             result = sb.ToString();
             return result;
         }
+
         internal string GetInsertTriggerStatement()
         {
             var result = string.Empty;
@@ -265,6 +276,7 @@ GO", IsKnotted ? knotReferenceName : TableName, TableName, versionColumnName, st
             result = sb.ToString();
             return result;
         }
+
         internal string GetRestatementFinderFunctionStatement()
         {
             if (!IsHistorized)
@@ -273,12 +285,12 @@ GO", IsKnotted ? knotReferenceName : TableName, TableName, versionColumnName, st
             var result = string.Empty;
             var sb = new StringBuilder();
             sb.AppendFormat(@"CREATE FUNCTION [{0}].[rf{1}] (
-        @id {2},", Capsule, TableName,Anchor.Identity);
+        @id {2},", Capsule, TableName, Anchor.Identity);
             if (IsEquivalent)
                 sb.AppendFormat(@"@eq {0} ,", GlobalMetadata.EquivalentRange);
             sb.AppendFormat(@"@value {0} ,
             @changed {1}"
-            , valueType, TimeRange);
+                , valueType, TimeRange);
             sb.AppendFormat(@")
     RETURNS tinyint AS
     BEGIN RETURN (
@@ -319,9 +331,44 @@ GO", IsKnotted ? knotReferenceName : TableName, TableName, versionColumnName, st
         ELSE 0
         END
     );
-    END", TableName,IsEquivalent? $"[{Capsule}].[e{TableName}](@eq)" : $"[{Capsule}].[{TableName}]"
-                ,anchorReferenceName,changingColumnName);
+    END", IsKnotted ? knotReferenceName : TableName, IsEquivalent
+                    ? $"[{Capsule}].[e{TableName}](@eq)"
+                    : $"[{Capsule}].[{TableName}]"
+                , anchorReferenceName, changingColumnName);
 
+            result = sb.ToString();
+            return result;
+        }
+
+        internal string GetRewinderFunctionStatement()
+        {
+            if (!IsHistorized)
+                return string.Empty;
+
+            var result = string.Empty;
+            var sb = new StringBuilder();
+            sb.AppendFormat(@"CREATE FUNCTION [{0}].[r{3}] (
+            {1}
+        @changingTimepoint {2}
+    )
+    RETURNS TABLE WITH SCHEMABINDING AS RETURN
+    SELECT
+", Capsule, IsEquivalent ? $"@equivalent {GlobalMetadata.EquivalentRange}," : string.Empty, TimeRange,TableName);
+            sb.AppendFormat(@"{0},
+        {1},
+        {2}
+        {3}
+        {4},
+        {5}
+    FROM
+        {6}
+    WHERE
+        {5} <= @changingTimepoint;
+GO", metadataColumnName, anchorReferenceName, IsEquivalent ? $"{equivalentColumnName}," : string.Empty,
+                HasCheckSum ? $"{checksumColumnName}," : string.Empty,
+                IsKnotted && !HasCheckSum ? knotReferenceName : TableName
+                , changingColumnName,
+                IsEquivalent ? $"[{Capsule}].[e{TableName}](@equivalent)," : $"[{Capsule}].[{TableName}]");
             result = sb.ToString();
             return result;
         }

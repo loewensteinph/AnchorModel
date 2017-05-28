@@ -9,8 +9,8 @@ namespace Anchor.Model.Test
     [TestClass]
     public class AnchorInsertSp
     {
-        private static Core.BusinessLogic.Model _model;
         private const string Path = "SampleModel.xml";
+        private static Core.BusinessLogic.Model _model;
 
         public static TSqlModel SqlModel;
 

@@ -165,9 +165,7 @@ namespace Anchor.Model.Core.BusinessLogic
         private void SetKnotReferences()
         {
             foreach (var knot in Knot)
-            {
                 knot.GlobalMetadata = Metadata;
-            }
         }
 
         public void InitializeSchema()
@@ -217,9 +215,15 @@ END");
                 finalParsedScript = parser.GetParsedSql(anchor.CreateInsertSpStatement);
                 SqlModel.AddObjects(finalParsedScript);
 
+                // TODO: FIX
+                //finalParsedScript = parser.GetParsedSql(anchor.CreatePitFunctionStatement);
+                //SqlModel.AddObjects(finalParsedScript);
+
                 foreach (var attr in anchor.Attribute)
                 {
                     finalParsedScript = parser.GetParsedSql(attr.InsertTriggerStatement);
+                    SqlModel.AddObjects(finalParsedScript);
+                    finalParsedScript = parser.GetParsedSql(attr.RewinderFunctionStatement);
                     SqlModel.AddObjects(finalParsedScript);
                     finalParsedScript = parser.GetParsedSql(attr.RestatementFinderFunctionStatement);
                     SqlModel.AddObjects(finalParsedScript);

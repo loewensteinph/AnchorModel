@@ -112,6 +112,11 @@
     <Build Include="dbo\Functions\rfAC_PLV_Actor_ProfessionalLevel.sql" />
     <Build Include="dbo\Functions\rfAC_NAM_Actor_Name.sql" />
     <Build Include="dbo\Functions\rfAC_exclusive_AC_with_ONG_currently.sql" />
+    <Build Include="dbo\Functions\rST_NAM_Stage_Name.sql" />
+    <Build Include="dbo\Functions\rST_AVG_Stage_Average.sql" />
+    <Build Include="dbo\Functions\rPE_REV_Performance_Revenue.sql" />
+    <Build Include="dbo\Functions\rAC_PLV_Actor_ProfessionalLevel.sql" />
+    <Build Include="dbo\Functions\rAC_NAM_Actor_Name.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\Anchor.dll" />

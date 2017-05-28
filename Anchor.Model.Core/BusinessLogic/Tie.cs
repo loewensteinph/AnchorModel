@@ -109,10 +109,8 @@ GO");
             var anchorFK = ForeignKeyList.Where(fk => fk.ReferencedTableType.Equals("Anchor"));
 
             foreach (var fk in anchorFK)
-            {
                 sb.AppendFormat(@"pre.{0} = @{0}
 {1}", fk.ColumnName, fk.Equals(anchorFK.Last()) ? string.Empty : "OR ");
-            }
             sb.AppendFormat(@")
             AND
                 pre.{0}_ChangedAt < @changed
@@ -128,10 +126,8 @@ GO");
             WHERE
             (", Metadata.Capsule, TableName);
             foreach (var fk in anchorFK)
-            {
                 sb.AppendFormat(@"fol.{0} = @{0}
 {1}", fk.ColumnName, fk.Equals(anchorFK.Last()) ? string.Empty : "OR ");
-            }
             sb.AppendFormat(@")
             AND
                 fol.{0}_ChangedAt > @changed
