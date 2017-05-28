@@ -11,6 +11,16 @@ namespace Anchor.Model.Core.BusinessLogic
             Attribute = new List<Attribute>();
         }
 
+        private string identityGenerator => Metadata.Generator == "true" ? "IDENTITY(1,1)" : string.Empty;
+        private const string businessIdentity = "Id";
+        string name => $"{Mnemonic}_{Descriptor}";
+        string businessName => Descriptor;
+        public string identityColumnName => $"{Mnemonic}_{GlobalMetadata.IdentitySuffix}";
+        public string capsule => Capsule == string.Empty ? GlobalMetadata.Encapsulation : Capsule;
+        string metadataColumnName => $"{GlobalMetadata.MetadataPrefix}_{Mnemonic}";
+        string dummyColumnName => $"{Mnemonic}_{GlobalMetadata.DummySuffix}";
+        string businessIdentityColumnName => $"{Descriptor}_{businessIdentity}";
+        public Metadata GlobalMetadata;
         public List<Attribute> Attribute { get; set; }
         private string TableName => $"{Mnemonic}_{Descriptor}";
         public string CreateTableStatement => GetCreateTableStatement();
@@ -32,11 +42,11 @@ namespace Anchor.Model.Core.BusinessLogic
             var sb = new StringBuilder();
 
             sb.AppendFormat(@"CREATE TABLE [{0}].[{1}] (
-    {2} {3} {4} NOT NULL,", Capsule, Name, IdentityColumnName, Identity, IdentityGenerator);
+    {2} {3} {4} NOT NULL,", Capsule, Name, identityColumnName, Identity, identityGenerator);
             sb.AppendFormat(@"Metadata_{0} int not null,
     CONSTRAINT pk{0}_{1} primary key(
         {2} ASC
-    ), ", Mnemonic, Descriptor, IdentityColumnName);
+    ), ", Mnemonic, Descriptor, identityColumnName);
             sb.Append(@");
 GO");
             result = sb.ToString();
@@ -79,7 +89,7 @@ GO");
                 idGenerator
             OPTION (MAXRECURSION 0);
         END
-    END", Capsule, Name, Mnemonic, IdentityColumnName);
+    END", Capsule, name, Mnemonic, identityColumnName);
             result = sb.ToString();
             return result;
         }
@@ -92,24 +102,24 @@ GO");
 
             var sb = new StringBuilder();
             sb.AppendFormat(@"CREATE VIEW [{0}].[l{1}] WITH SCHEMABINDING AS "
-                , Capsule, Name);
+                , Capsule, name);
             sb.AppendFormat(@"SELECT [{0}].{1},"
-                , Mnemonic, IdentityColumnName);
-            sb.AppendFormat(@"[{0}].Metadata_{1},"
-                , Mnemonic, Mnemonic);
+                , Mnemonic, identityColumnName);
+            sb.AppendFormat(@"[{0}].{1},"
+                , Mnemonic, metadataColumnName);
             foreach (var attribute in Attribute)
             {
                 var last = attribute.Equals(Attribute.Last());
                 sb.AppendFormat(@"[{0}].{1},"
-                    , attribute.Mnemonic, attribute.IdentityColumnName);
+                    , attribute.Mnemonic, attribute.anchorReferenceName);
                 sb.AppendFormat(@"[{0}].{1},"
-                    , attribute.Mnemonic, attribute.MetaDataColumnName);
+                    , attribute.Mnemonic, attribute.metadataColumnName);
                 if (attribute.IsHistorized)
                     sb.AppendFormat(@"[{0}].{1},"
-                        , attribute.Mnemonic, attribute.HistorizeColumn);
+                        , attribute.Mnemonic, attribute.changingColumnName);
                 if (attribute.HasCheckSum)
                     sb.AppendFormat(@"[{0}].{1},"
-                        , attribute.Mnemonic, attribute.ChecksumColumnName);
+                        , attribute.Mnemonic, attribute.checksumColumnName);
                 if (attribute.IsKnotted)
                 {
                     sb.AppendFormat(@"[k{0}].{1} AS {2}_{3}_{4},"
@@ -136,7 +146,7 @@ GO");
                 sb.AppendFormat(@"LEFT JOIN [{0}].[{1}] [{2}] "
                     , attribute.Capsule, attribute.TableName, attribute.Mnemonic);
                 sb.AppendFormat(@"ON [{0}].{1} = [{2}].{3} "
-                    , attribute.Mnemonic, attribute.IdentityColumnName, Mnemonic, IdentityColumnName);
+                    , attribute.Mnemonic, attribute.anchorReferenceName, Mnemonic, identityColumnName);
                 if (attribute.IsHistorized)
                     sb.AppendFormat(@"AND
     [{0}].{1} = (
@@ -147,21 +157,15 @@ GO");
         WHERE
             sub.{4} = [{5}].{6}
    ) "
-                        , attribute.Mnemonic, attribute.HistorizeColumn, attribute.Metadata.Capsule,
+                        , attribute.Mnemonic, attribute.changingColumnName, attribute.Capsule,
                         attribute.TableName,
-                        attribute.IdentityColumnName, Mnemonic, IdentityColumnName);
-                /*
-                 * LEFT JOIN
-                    [dbo].[UTL_Utilization] [kAVG]
-                ON
-                    [kAVG].UTL_ID = [AVG].ST_AVG_UTL_ID
-                 */
+                        attribute.anchorReferenceName, Mnemonic, identityColumnName);
                 if (attribute.IsKnotted)
                 {
                     sb.AppendFormat(@"LEFT JOIN [{0}].[{1}] [k{2}] "
                         , attribute.Knot.Metadata.Capsule, attribute.Knot.Name, attribute.Mnemonic);
                     sb.AppendFormat(@"ON [k{0}].{1} = [{2}].{3} "
-                        , attribute.Mnemonic, attribute.Knot.IdentityColumnName, attribute.Mnemonic,
+                        , attribute.Mnemonic, attribute.Knot.identityColumnName, attribute.Mnemonic,
                         attribute.KnotColumnName);
                 }
             }

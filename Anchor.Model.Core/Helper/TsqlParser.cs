@@ -9,18 +9,16 @@ namespace Anchor.Model.Core.Helper
     {
         private readonly TSqlParser _parser = new TSql130Parser(true, SqlEngineType.All);
 
-        public string GetParsedSql(string Script)
+        public string GetParsedSql(string script)
         {
             TSqlFragment result;
-            string resultScript;
-            using (TextReader sr = new StringReader(Script))
+            using (TextReader sr = new StringReader(script))
             {
-                IList<ParseError> errors;
-                result = _parser.Parse(sr, out errors);
+                result = _parser.Parse(sr, out IList<ParseError> errors);
             }
 
             SqlScriptGenerator sc = new Sql130ScriptGenerator();
-            sc.GenerateScript(result, out resultScript);
+            sc.GenerateScript(result, out string resultScript);
 
             return resultScript;
         }
@@ -28,11 +26,6 @@ namespace Anchor.Model.Core.Helper
 
     internal class SqlVisitor : TSqlFragmentVisitor
     {
-        private int DELETEcount = 0;
-        private int INSERTcount = 0;
-        private int SELECTcount = 0;
-        private int UPDATEcount = 0;
-
         private string GetNodeTokenText(TSqlFragment fragment)
         {
             var tokenText = new StringBuilder();

@@ -1,4 +1,4 @@
-﻿<schema format="0.99" date="2017-05-25" time="21:08:56">
+﻿<schema format="0.99" date="2017-05-28" time="11:22:30">
   <metadata changingRange="datetime" encapsulation="dbo" identity="int" metadataPrefix="Metadata" metadataType="int"
             metadataUsage="true" changingSuffix="ChangedAt" identitySuffix="ID" positIdentity="int"
             positGenerator="true" positingRange="datetime" positingSuffix="PositedAt" positorRange="tinyint"
@@ -11,11 +11,11 @@
             temporalization="uni" />
   <knot mnemonic="PAT" descriptor="ParentalType" identity="tinyint" dataRange="varchar(42)">
     <metadata capsule="dbo" generator="false" />
-    <layout x="1109.16" y="375.74" fixed="false" />
+    <layout x="1107.04" y="333.53" fixed="false" />
   </knot>
   <knot mnemonic="GEN" descriptor="Gender" identity="bit" dataRange="varchar(42)">
     <metadata capsule="dbo" generator="false" />
-    <layout x="1182.35" y="730.96" fixed="false" />
+    <layout x="1254.38" y="678.61" fixed="false" />
   </knot>
   <knot mnemonic="PLV" descriptor="ProfessionalLevel" identity="tinyint" dataRange="varchar(max)">
     <metadata capsule="dbo" generator="false" checksum="true" />
@@ -23,11 +23,11 @@
   </knot>
   <knot mnemonic="UTL" descriptor="Utilization" identity="tinyint" dataRange="tinyint">
     <metadata capsule="dbo" generator="false" />
-    <layout x="511.25" y="896.48" fixed="false" />
+    <layout x="511.25" y="896.48" fixed="true" />
   </knot>
   <knot mnemonic="ONG" descriptor="Ongoing" identity="tinyint" dataRange="varchar(3)">
     <metadata capsule="dbo" generator="false" />
-    <layout x="1275.38" y="474.30" fixed="false" />
+    <layout x="1455.82" y="439.38" fixed="false" />
   </knot>
   <knot mnemonic="RAT" descriptor="Rating" identity="tinyint" dataRange="varchar(42)">
     <metadata capsule="dbo" generator="false" />
@@ -47,16 +47,16 @@
       <metadata capsule="dbo" checksum="true" restatable="true" idempotent="true" />
       <layout x="682.05" y="405.85" fixed="false" />
     </attribute>
-    <layout x="770.49" y="433.25" fixed="false" />
+    <layout x="759.34" y="447.87" fixed="false" />
   </anchor>
   <anchor mnemonic="EV" descriptor="Event" identity="int">
     <metadata capsule="dbo" generator="true" />
-    <layout x="756.30" y="182.53" fixed="false" />
+    <layout x="756.30" y="182.53" fixed="true" />
   </anchor>
   <anchor mnemonic="ST" descriptor="Stage" identity="int">
     <metadata capsule="dbo" generator="true" />
     <attribute mnemonic="NAM" descriptor="Name" timeRange="datetime" dataRange="varchar(42)">
-      <metadata capsule="dbo" restatable="true" idempotent="false" />
+      <metadata capsule="dbo" restatable="false" idempotent="false" />
       <layout x="485.17" y="671.63" fixed="false" />
     </attribute>
     <attribute mnemonic="LOC" descriptor="Location" dataRange="geography">
@@ -81,13 +81,13 @@
     </attribute>
     <attribute mnemonic="GEN" descriptor="Gender" knotRange="GEN">
       <metadata capsule="dbo" />
-      <layout x="1122.13" y="682.20" fixed="false" />
+      <layout x="1220.12" y="602.80" fixed="false" />
     </attribute>
     <attribute mnemonic="PLV" descriptor="ProfessionalLevel" timeRange="datetime" knotRange="PLV">
       <metadata capsule="dbo" restatable="true" idempotent="false" />
-      <layout x="1222.95" y="601.52" fixed="false" />
+      <layout x="1294.92" y="547.12" fixed="false" />
     </attribute>
-    <layout x="1087.20" y="563.34" fixed="false" />
+    <layout x="1195.07" y="499.07" fixed="false" />
   </anchor>
   <anchor mnemonic="PR" descriptor="Program" identity="int">
     <metadata capsule="dbo" generator="true" />
@@ -102,13 +102,13 @@
     <anchorRole role="with" type="AC" identifier="false" />
     <knotRole role="currently" type="ONG" identifier="false" />
     <metadata capsule="dbo" restatable="true" idempotent="false" />
-    <layout x="1206.94" y="516.09" fixed="false" />
+    <layout x="1389.12" y="462.31" fixed="true" />
   </tie>
   <tie>
     <anchorRole role="wasHeld" type="PE" identifier="true" />
     <anchorRole role="at" type="ST" identifier="false" />
     <metadata capsule="dbo" />
-    <layout x="662.08" y="529.54" fixed="false" />
+    <layout x="662.08" y="529.54" fixed="true" />
   </tie>
   <tie>
     <anchorRole role="subset" type="PE" identifier="false" />
@@ -126,14 +126,14 @@
     <anchorRole role="in" type="PE" identifier="true" />
     <anchorRole role="wasCast" type="AC" identifier="true" />
     <metadata capsule="dbo" />
-    <layout x="931.81" y="486.83" fixed="false" />
+    <layout x="976.14" y="465.68" fixed="false" />
   </tie>
-  <tie timeRange="datetime">
+  <tie>
     <anchorRole role="part" type="AC" identifier="true" />
     <anchorRole role="in" type="PR" identifier="true" />
     <knotRole role="got" type="RAT" identifier="false" />
-    <metadata capsule="dbo" restatable="true" idempotent="false" />
-    <layout x="966.99" y="626.12" fixed="false" />
+    <metadata capsule="dbo" />
+    <layout x="980.50" y="614.85" fixed="true" />
   </tie>
   <tie timeRange="datetime">
     <anchorRole role="at" type="ST" identifier="true" />
@@ -146,13 +146,13 @@
     <anchorRole role="child" type="AC" identifier="true" />
     <knotRole role="having" type="PAT" identifier="true" />
     <metadata capsule="dbo" restatable="true" idempotent="true" />
-    <layout x="1088.79" y="449.81" fixed="true" />
+    <layout x="1070.11" y="401.04" fixed="true" />
   </tie>
   <tie>
     <anchorRole role="content" type="PR" identifier="false" />
     <anchorRole role="location" type="ST" identifier="false" />
     <anchorRole role="of" type="PE" identifier="true" />
     <metadata capsule="dbo" />
-    <layout x="708.60" y="564.94" fixed="false" />
+    <layout x="705.28" y="581.61" fixed="true" />
   </tie>
 </schema>

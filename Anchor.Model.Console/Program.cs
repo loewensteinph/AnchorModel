@@ -15,7 +15,7 @@ namespace Anchor.Model.Console
             SqlModel = new TSqlModel(SqlServerVersion.Sql130, options);
             _model = new Core.BusinessLogic.Model(path);
 
-            foreach (var anch in _model.Anchor.Where(a => a.Mnemonic == "ST"))
+            foreach (var anch in _model.Anchor)
             {
                 System.Console.WriteLine(anch.CreateInsertSpStatement);
 
@@ -23,23 +23,24 @@ namespace Anchor.Model.Console
                 {
                     //System.Console.WriteLine(att.Descriptor);
                     //System.Console.WriteLine(att.Knot);
-                    //System.Console.WriteLine(att.CreateTableStatement);
+                    System.Console.WriteLine(att.RestatementFinderFunctionStatement);
                 }
 
                 var res = anch.ToString();
             }
 
-            foreach (var knot in _model.Knot)
+            foreach (var tie in _model.Tie.Where(t => t.IsHistorized && !t.HasIdentifiers))
             {
-                var res = knot.ToString();
+                System.Console.WriteLine(tie.TableName);
+                System.Console.WriteLine(tie.RestatementFinderFunctionStatement);
             }
-            var sqlObjects = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.Table)
-                .FirstOrDefault(tab => tab.Name.Parts[1].Equals("PLV_ProfessionalLevel"));
+            //var sqlObjects = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.Table)
+            //    .FirstOrDefault(tab => tab.Name.Parts[1].Equals("PLV_ProfessionalLevel"));
 
-            var clr = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction);
+            //var clr = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction);
 
-            string script;
-            var sc = sqlObjects.TryGetScript(out script);
+            //string script;
+            //var sc = sqlObjects.TryGetScript(out script);
 
             _model.GenerateDacPac();
         }

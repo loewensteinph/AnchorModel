@@ -106,6 +106,12 @@
     <Build Include="dbo\Stored Procedures\kPE_Performance.sql" />
     <Build Include="dbo\Stored Procedures\kEV_Event.sql" />
     <Build Include="dbo\Stored Procedures\kAC_Actor.sql" />
+    <Build Include="dbo\Functions\rfST_NAM_Stage_Name.sql" />
+    <Build Include="dbo\Functions\rfST_AVG_Stage_Average.sql" />
+    <Build Include="dbo\Functions\rfPE_REV_Performance_Revenue.sql" />
+    <Build Include="dbo\Functions\rfAC_PLV_Actor_ProfessionalLevel.sql" />
+    <Build Include="dbo\Functions\rfAC_NAM_Actor_Name.sql" />
+    <Build Include="dbo\Functions\rfAC_exclusive_AC_with_ONG_currently.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\Anchor.dll" />

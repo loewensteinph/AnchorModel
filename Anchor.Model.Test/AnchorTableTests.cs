@@ -9,7 +9,7 @@ namespace Anchor.Model.Test
     public class AnchorTableTests
     {
         private static Core.BusinessLogic.Model _model;
-        private static readonly string path = "SampleModel.xml";
+        private const string Path = "SampleModel.xml";
 
         public static TSqlModel SqlModel;
 
@@ -21,7 +21,7 @@ namespace Anchor.Model.Test
             _context = testContext;
             var options = new TSqlModelOptions();
             SqlModel = new TSqlModel(SqlServerVersion.Sql130, options);
-            _model = new Core.BusinessLogic.Model(path);
+            _model = new Core.BusinessLogic.Model(Path);
         }
 
         [TestMethod]

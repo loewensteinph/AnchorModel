@@ -22,9 +22,10 @@ namespace Anchor.Model.Core
             MessageList.Add("*** Start of processing for " +
                             databaseName);
 
-            var dacOptions = new DacDeployOptions();
-            dacOptions.BlockOnPossibleDataLoss = false;
-
+            var dacOptions = new DacDeployOptions()
+            {
+                BlockOnPossibleDataLoss = false
+            };
             var dacServiceInstance = new DacServices(connectionString);
             dacServiceInstance.ProgressChanged +=
                 (s, e) =>

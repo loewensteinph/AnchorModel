@@ -21,6 +21,7 @@ namespace Anchor.Model.Core.BusinessLogic
             Knot = new List<Knot>();
             Tie = new List<Tie>();
             Schema = new Schema();
+            Metadata = new Metadata();
 
             var serializer = new XmlSerializer(typeof(Schema));
             var reader = new StreamReader(path);
@@ -37,6 +38,8 @@ namespace Anchor.Model.Core.BusinessLogic
                     cfg.CreateMissingTypeMaps = true;
                 }
             );
+
+            Metadata = Mapper.Map<Metadata>(Schema.Metadata);
 
             foreach (var anch in Schema.Anchor)
             {
@@ -57,6 +60,7 @@ namespace Anchor.Model.Core.BusinessLogic
             InitializeSchema();
         }
 
+        public Metadata Metadata { get; set; }
         public Schema Schema { get; set; }
         public List<Anchor> Anchor { get; set; }
         public List<Tie> Tie { get; set; }
@@ -80,19 +84,23 @@ namespace Anchor.Model.Core.BusinessLogic
         private void SetAnchorReferences()
         {
             foreach (var anchor in Anchor)
-            foreach (var attribute in anchor.Attribute)
             {
-                attribute.Anchor = anchor;
-                if (!string.IsNullOrEmpty(attribute.KnotRange))
-                    attribute.Knot = Knot.FirstOrDefault(kn => kn.Mnemonic == attribute.KnotRange);
-                if (!attribute.IsHistorized && !attribute.IsKnotted)
-                    attribute.AttributeType = AttributeType.Static;
-                if (attribute.IsHistorized && !attribute.IsKnotted)
-                    attribute.AttributeType = AttributeType.Historized;
-                if (!attribute.IsHistorized && attribute.IsKnotted)
-                    attribute.AttributeType = AttributeType.StaticKnotted;
-                if (attribute.IsHistorized && attribute.IsKnotted)
-                    attribute.AttributeType = AttributeType.HistorizedKnotted;
+                anchor.GlobalMetadata = Metadata;
+                foreach (var attribute in anchor.Attribute)
+                {
+                    attribute.GlobalMetadata = Metadata;
+                    attribute.Anchor = anchor;
+                    if (!string.IsNullOrEmpty(attribute.KnotRange))
+                        attribute.Knot = Knot.FirstOrDefault(kn => kn.Mnemonic == attribute.KnotRange);
+                    if (!attribute.IsHistorized && !attribute.IsKnotted)
+                        attribute.AttributeType = AttributeType.Static;
+                    if (attribute.IsHistorized && !attribute.IsKnotted)
+                        attribute.AttributeType = AttributeType.Historized;
+                    if (!attribute.IsHistorized && attribute.IsKnotted)
+                        attribute.AttributeType = AttributeType.StaticKnotted;
+                    if (attribute.IsHistorized && attribute.IsKnotted)
+                        attribute.AttributeType = AttributeType.HistorizedKnotted;
+                }
             }
         }
 
@@ -154,11 +162,21 @@ namespace Anchor.Model.Core.BusinessLogic
             }
         }
 
+        private void SetKnotReferences()
+        {
+            foreach (var knot in Knot)
+            {
+                knot.GlobalMetadata = Metadata;
+            }
+        }
+
         public void InitializeSchema()
         {
             SetAnchorReferences();
 
             SetTieReferences();
+
+            SetKnotReferences();
 
             var options = new TSqlModelOptions();
             SqlModel = new TSqlModel(SqlServerVersion.Sql130, options);
@@ -185,7 +203,6 @@ END");
 
             var parser = new TsqlParser();
             string finalParsedScript;
-
             foreach (var knot in Knot)
                 SqlModel.AddObjects(knot.CreateTableStatement);
             foreach (var anchor in Anchor)
@@ -199,9 +216,21 @@ END");
 
                 finalParsedScript = parser.GetParsedSql(anchor.CreateInsertSpStatement);
                 SqlModel.AddObjects(finalParsedScript);
+
+                foreach (var attr in anchor.Attribute)
+                {
+                    finalParsedScript = parser.GetParsedSql(attr.InsertTriggerStatement);
+                    SqlModel.AddObjects(finalParsedScript);
+                    finalParsedScript = parser.GetParsedSql(attr.RestatementFinderFunctionStatement);
+                    SqlModel.AddObjects(finalParsedScript);
+                }
             }
             foreach (var tie in Tie)
+            {
                 SqlModel.AddObjects(tie.CreateTableStatement);
+                finalParsedScript = parser.GetParsedSql(tie.RestatementFinderFunctionStatement);
+                SqlModel.AddObjects(finalParsedScript);
+            }
         }
     }
 }

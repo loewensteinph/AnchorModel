@@ -2,6 +2,7 @@
 {
     public class Metadata
     {
+        public bool improved => Naming == "improved";
         public string ChangingRange { get; set; }
         public string Encapsulation { get; set; }
         public string Identity { get; set; }
