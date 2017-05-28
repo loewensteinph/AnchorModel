@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Anchor.Model.Test
 {
     [TestClass]
-    public class AttributeRestatementFinderFunctionTest
+    public class FinderFunctionTest
     {
         private const string Path = "SampleModel.xml";
         private static Core.BusinessLogic.Model _model;
@@ -28,63 +28,29 @@ namespace Anchor.Model.Test
         [TestMethod]
         public void RestatementFinderFuncTest1()
         {
-            var test = @"CREATE FUNCTION [dbo].[rfST_NAM_Stage_Name] (
-        @id int,
-        @value varchar(42),
-        @changed datetime
-    )
-    RETURNS tinyint AS
-    BEGIN RETURN (
-        CASE WHEN EXISTS (
-            SELECT
-                @value 
-            WHERE
-                @value = (
-                    SELECT TOP 1
-                        pre.ST_NAM_Stage_Name
-                    FROM
-                        [dbo].[ST_NAM_Stage_Name] pre
-                    WHERE
-                        pre.ST_NAM_ST_ID = @id
-                    AND
-                        pre.ST_NAM_ChangedAt < @changed
-                    ORDER BY
-                        pre.ST_NAM_ChangedAt DESC
-                )
-        ) OR EXISTS (
-            SELECT
-                @value 
-            WHERE
-                @value = (
-                    SELECT TOP 1
-                        fol.ST_NAM_Stage_Name
-                    FROM
-                        [dbo].[ST_NAM_Stage_Name] fol
-                    WHERE
-                        fol.ST_NAM_ST_ID = @id
-                    AND
-                        fol.ST_NAM_ChangedAt > @changed
-                    ORDER BY
-                        fol.ST_NAM_ChangedAt ASC
-                )
-        )
-        THEN 1
-        ELSE 0
-        END
-    );
-    END";
+            var test = @"CREATE FUNCTION [dbo].[rPE_REV_Performance_Revenue] (@changingTimepoint DATETIME)
+RETURNS TABLE
+WITH SCHEMABINDING
+AS RETURN
+SELECT Metadata_PE_REV,
+       PE_REV_PE_ID,
+       PE_REV_Checksum,
+       PE_REV_Performance_Revenue,
+       PE_REV_ChangedAt
+FROM [dbo].[PE_REV_Performance_Revenue]
+WHERE PE_REV_ChangedAt <= @changingTimepoint;";
             var parser = new TsqlParser();
             var finalParsedScript = parser.GetParsedSql(test);
 
             SqlModel.AddObjects(finalParsedScript);
-            var sqlObjects = SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction)
-                .FirstOrDefault(tab => tab.Name.Parts[1].Equals("rfST_NAM_Stage_Name"));
+            var sqlObjects = SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.TableValuedFunction)
+                .FirstOrDefault(tab => tab.Name.Parts[1].Equals("rPE_REV_Performance_Revenue"));
             string assertScript;
             Debug.Assert(sqlObjects != null, "sqlObjects != null");
             var assertSuccess = sqlObjects.TryGetScript(out assertScript);
 
-            var testObject = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.ScalarFunction)
-                .FirstOrDefault(tab => tab.Name.Parts[1].Equals("rfST_NAM_Stage_Name"));
+            var testObject = _model.SqlModel.GetObjects(DacQueryScopes.UserDefined, ModelSchema.TableValuedFunction)
+                .FirstOrDefault(tab => tab.Name.Parts[1].Equals("rPE_REV_Performance_Revenue"));
             string testScript;
             Debug.Assert(testObject != null, "testObject != null");
             var testSuccess = testObject.TryGetScript(out testScript);

@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnchorInsertSp.cs" />
+    <Compile Include="AttributeRewinderTest.cs" />
     <Compile Include="TieRestatementFinderFunctionTest.cs" />
     <Compile Include="AttributeRestatementFinderFunctionTest.cs" />
     <Compile Include="AttributeTriggerTest.cs" />
