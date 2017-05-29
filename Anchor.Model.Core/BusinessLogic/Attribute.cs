@@ -19,7 +19,7 @@ namespace Anchor.Model.Core.BusinessLogic
         private string statementTypes => IsHistorized && !IsIdempotent ? "'N','R'" : "'N'";
         private bool IsIdempotent => Metadata.Idempotent == "true" ? true : false;
         private string identityGenerator => Metadata.Generator == "true" ? "IDENTITY(1,1)" : string.Empty;
-        private string uniqueMnemonic => $"{Anchor.Mnemonic}_{Mnemonic}";
+        public string uniqueMnemonic => $"{Anchor.Mnemonic}_{Mnemonic}";
         private string name => $"{Anchor.Mnemonic}_{Anchor.Descriptor}_{Descriptor}";
         private string businessName => Descriptor;
         private string positName => $"{Anchor.Mnemonic}_{GlobalMetadata.PositSuffix}";

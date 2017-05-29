@@ -15,7 +15,7 @@ namespace Anchor.Model.Console
             SqlModel = new TSqlModel(SqlServerVersion.Sql130, options);
             _model = new Core.BusinessLogic.Model(path);
 
-            foreach (var anch in _model.Anchor)
+            foreach (var anch in _model.Anchor.Where(x=>x.Mnemonic == "AC"))
             {
                 System.Console.WriteLine(anch.CreatePitFunctionStatement);
 

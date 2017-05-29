@@ -27,7 +27,7 @@ namespace Anchor.Model.Core.BusinessLogic
         public string IdentityColumnName => $"{Mnemonic}_ID";
         private string ValueColumnName => Name;
         private string IdentityGenerator => Metadata.Generator == "true" ? "IDENTITY(1,1)" : string.Empty;
-        private bool HasCheckSum => Metadata.Checksum == "true";
+        public bool HasCheckSum => Metadata.Checksum == "true";
 
         internal string GetCreateTableStatement()
         {
@@ -37,15 +37,15 @@ namespace Anchor.Model.Core.BusinessLogic
 
             sb.AppendFormat(@"CREATE TABLE [{0}].[{1}] (
     {2} {3} {4} NOT NULL,
-    {5} {6} NOT NULL,", Capsule, Name, IdentityColumnName, Identity, IdentityGenerator, ValueColumnName, DataRange);
+    {5} {6} NOT NULL,", Capsule, Name, identityColumnName, Identity, IdentityGenerator, valueColumnName, DataRange);
             if (HasCheckSum)
                 sb.AppendFormat(
-                    "{0}_Checksum AS cast(dbo.MD5(cast({1} as varbinary(max))) as varbinary(16)) PERSISTED,", Mnemonic,
-                    ValueColumnName);
+                    "{0} AS cast(dbo.MD5(cast({1} as varbinary(max))) as varbinary(16)) PERSISTED,", checksumColumnName,
+                    valueColumnName);
             sb.AppendFormat(@"Metadata_{0} int not null,
     CONSTRAINT pk{0}_{1} primary key(
         {2} ASC
-    ), ", Mnemonic, Descriptor, IdentityColumnName);
+    ), ", Mnemonic, Descriptor, identityColumnName);
             if (HasCheckSum)
                 sb.AppendFormat(@"CONSTRAINT uq{0}_{1} UNIQUE (
         {0}_Checksum 

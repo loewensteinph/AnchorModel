@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PointInTimeTest.cs" />
     <Compile Include="AnchorInsertSp.cs" />
     <Compile Include="AttributeRewinderTest.cs" />
     <Compile Include="TieRestatementFinderFunctionTest.cs" />

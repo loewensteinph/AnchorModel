@@ -117,6 +117,10 @@
     <Build Include="dbo\Functions\rPE_REV_Performance_Revenue.sql" />
     <Build Include="dbo\Functions\rAC_PLV_Actor_ProfessionalLevel.sql" />
     <Build Include="dbo\Functions\rAC_NAM_Actor_Name.sql" />
+    <Build Include="dbo\Functions\pST_Stage.sql" />
+    <Build Include="dbo\Functions\pPR_Program.sql" />
+    <Build Include="dbo\Functions\pPE_Performance.sql" />
+    <Build Include="dbo\Functions\pAC_Actor.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\Anchor.dll" />

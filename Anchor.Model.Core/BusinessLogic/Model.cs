@@ -216,8 +216,8 @@ END");
                 SqlModel.AddObjects(finalParsedScript);
 
                 // TODO: FIX
-                //finalParsedScript = parser.GetParsedSql(anchor.CreatePitFunctionStatement);
-                //SqlModel.AddObjects(finalParsedScript);
+                finalParsedScript = parser.GetParsedSql(anchor.CreatePitFunctionStatement);
+                SqlModel.AddObjects(finalParsedScript);
 
                 foreach (var attr in anchor.Attribute)
                 {

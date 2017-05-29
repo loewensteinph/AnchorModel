@@ -183,7 +183,7 @@ GO");
 
             var sb = new StringBuilder();
             sb.AppendFormat(@"CREATE FUNCTION [{0}].[p{1}] (
-    @changingTimepoint datetime
+    @changingTimepoint datetime2(7)
 )
 RETURNS TABLE WITH SCHEMABINDING AS RETURN
 SELECT"
@@ -205,11 +205,14 @@ SELECT"
                         , attribute.Mnemonic, attribute.checksumColumnName);
                 if (attribute.IsKnotted)
                 {
+                    if(attribute.Knot.HasCheckSum)
+                        sb.AppendFormat(@"[k{0}].{1} AS {2}_{1},"
+                            , attribute.Mnemonic, attribute.Knot.checksumColumnName, attribute.uniqueMnemonic);
                     sb.AppendFormat(@"[k{0}].{1} AS {2}_{3}_{4},"
                         , attribute.Mnemonic, attribute.Knot.Name, Mnemonic,
                         attribute.Mnemonic, attribute.Knot.Name);
-                    sb.AppendFormat(@"[k{0}].Metadata_{1} AS {2}_{3}_Metadata_{4},"
-                        , attribute.Mnemonic, attribute.Knot.Mnemonic, Mnemonic,
+                    sb.AppendFormat(@"[k{0}].{1} AS {2}_{3}_{1},"
+                        , attribute.Mnemonic, attribute.Knot.metadataColumnName, Mnemonic,
                         attribute.Mnemonic, attribute.Knot.Mnemonic);
                     sb.AppendFormat(@"[{0}].{1} {2}"
                         , attribute.Mnemonic, attribute.KnotColumnName, last ? string.Empty : ", "
@@ -225,6 +228,13 @@ SELECT"
                 , Capsule, TableName, Mnemonic);
             foreach (var attribute in Attribute)
             {
+                if (!attribute.IsHistorized)
+                { 
+                    sb.AppendFormat(@"LEFT JOIN [{0}].[{1}] [{2}] "
+                    , attribute.Capsule, attribute.TableName, attribute.Mnemonic);
+                sb.AppendFormat(@"ON [{0}].{1} = [{2}].{3} "
+                    , attribute.Mnemonic, attribute.anchorReferenceName, Mnemonic, identityColumnName);
+                }
                 if (attribute.IsHistorized)
                 {
                     sb.AppendFormat(@"LEFT JOIN [{0}].[r{1}](@changingTimepoint) [{2}] "
@@ -243,13 +253,6 @@ SELECT"
                         , attribute.Mnemonic, attribute.changingColumnName, attribute.Capsule,
                         attribute.TableName,
                         attribute.anchorReferenceName, Mnemonic, identityColumnName);
-                }
-                if (!attribute.IsKnotted && !attribute.IsHistorized)
-                {
-                    sb.AppendFormat(@"LEFT JOIN [{0}].[{1}] [{2}] "
-                        , attribute.Capsule, attribute.TableName, attribute.Mnemonic);
-                    sb.AppendFormat(@"ON [{0}].{1} = [{2}].{3} "
-                        , attribute.Mnemonic, attribute.anchorReferenceName, Mnemonic, identityColumnName);
                 }
                 if (attribute.IsKnotted)
                 {
